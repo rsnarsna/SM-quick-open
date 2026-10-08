@@ -170,168 +170,291 @@
 }
 
 /* ============================================
-   SM Web Terminal Modal (xterm.js Overlay)
+   SM Floating Multi-Session Web Terminal Window
    ============================================ */
 
-#sm-terminal-overlay {
+#sm-floating-terminal {
   position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
-  background: rgba(10, 15, 30, 0.75) !important;
-  backdrop-filter: blur(6px) !important;
+  bottom: 24px !important;
+  right: 24px !important;
+  width: 780px !important;
+  height: 520px !important;
+  min-width: 460px !important;
+  min-height: 320px !important;
+  max-width: 98vw !important;
+  max-height: 96vh !important;
+  resize: both !important;
+  overflow: hidden !important;
   z-index: 2147483647 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  animation: sm-fadein 0.2s ease-out !important;
-}
-
-#sm-terminal-modal {
-  width: 820px !important;
-  max-width: 95vw !important;
-  height: 580px !important;
-  max-height: 90vh !important;
-  background: #0d1322 !important;
+  background: #090e1a !important;
   border: 1px solid #1e293b !important;
-  border-radius: 12px !important;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 30px rgba(56, 189, 248, 0.15) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.75), 0 0 24px rgba(56, 189, 248, 0.2) !important;
   display: flex !important;
   flex-direction: column !important;
-  overflow: hidden !important;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  animation: sm-float-in 0.2s ease-out !important;
+  box-sizing: border-box !important;
 }
 
-/* Terminal Header */
-.sm-term-header {
+#sm-floating-terminal.sm-term-maximized {
+  top: 16px !important;
+  left: 16px !important;
+  bottom: auto !important;
+  right: auto !important;
+  width: calc(100vw - 32px) !important;
+  height: calc(100vh - 32px) !important;
+  max-width: calc(100vw - 32px) !important;
+  max-height: calc(100vh - 32px) !important;
+  border-radius: 8px !important;
+  resize: none !important;
+}
+
+/* Titlebar & Multi-Session Tabs */
+.sm-term-titlebar {
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
-  padding: 12px 18px !important;
-  background: #111827 !important;
-  border-bottom: 1px solid #1f2937 !important;
+  background: #0f172a !important;
+  border-bottom: 1px solid #1e293b !important;
+  padding: 0 10px 0 12px !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  cursor: move !important;
+  user-select: none !important;
+  box-sizing: border-box !important;
 }
 
-.sm-term-title {
+.sm-term-tabs-row {
   display: flex !important;
   align-items: center !important;
-  gap: 10px !important;
-  font-size: 14px !important;
-  font-weight: 700 !important;
-  color: #f3f4f6 !important;
+  gap: 8px !important;
+  flex: 1 !important;
+  overflow-x: auto !important;
+  scrollbar-width: none !important;
 }
 
-.sm-term-title .badge {
-  background: rgba(0, 212, 170, 0.15) !important;
-  color: #00d4aa !important;
-  border: 1px solid rgba(0, 212, 170, 0.4) !important;
-  font-size: 11px !important;
-  padding: 2px 8px !important;
-  border-radius: 12px !important;
+.sm-term-tabs-row::-webkit-scrollbar {
+  display: none !important;
 }
 
-.sm-term-close-btn {
-  background: transparent !important;
-  border: none !important;
-  color: #9ca3af !important;
-  font-size: 18px !important;
-  cursor: pointer !important;
-  width: 28px !important;
-  height: 28px !important;
+.sm-term-brand {
   display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  border-radius: 6px !important;
-  transition: all 0.15s !important;
-}
-
-.sm-term-close-btn:hover {
-  background: rgba(239, 68, 68, 0.2) !important;
-  color: #ef4444 !important;
-}
-
-/* Key Banner & Commands Row */
-.sm-term-banner {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  padding: 10px 18px !important;
-  background: #162033 !important;
-  border-bottom: 1px solid #1f2937 !important;
-  font-size: 12px !important;
-  color: #94a3b8 !important;
-}
-
-.sm-term-key-badge {
-  display: inline-flex !important;
   align-items: center !important;
   gap: 6px !important;
+  font-weight: 700 !important;
   color: #38bdf8 !important;
-  font-family: monospace !important;
-  font-weight: 600 !important;
+  font-size: 13px !important;
+  padding-right: 8px !important;
+  border-right: 1px solid #334155 !important;
+  white-space: nowrap !important;
 }
 
-.sm-term-download-key-btn {
-  background: #10b981 !important;
-  color: #ffffff !important;
-  border: none !important;
-  padding: 4px 10px !important;
-  border-radius: 4px !important;
-  font-size: 11px !important;
-  font-weight: 700 !important;
-  cursor: pointer !important;
-  display: inline-flex !important;
+.sm-term-tabs-list {
+  display: flex !important;
   align-items: center !important;
   gap: 4px !important;
-  transition: background 0.15s !important;
-  text-decoration: none !important;
 }
 
-.sm-term-download-key-btn:hover {
-  background: #059669 !important;
-}
-
-/* OS Switcher & Command Box */
-.sm-term-cmd-bar {
-  padding: 10px 18px !important;
-  background: #0b1120 !important;
-  border-bottom: 1px solid #1e293b !important;
+.sm-tab {
   display: flex !important;
   align-items: center !important;
-  justify-content: space-between !important;
-  gap: 12px !important;
-}
-
-.sm-term-os-tabs {
-  display: flex !important;
   gap: 6px !important;
-}
-
-.sm-term-os-tab {
+  padding: 5px 10px !important;
   background: #1e293b !important;
   color: #94a3b8 !important;
   border: 1px solid #334155 !important;
-  padding: 4px 8px !important;
+  border-radius: 6px 6px 0 0 !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  max-width: 175px !important;
+  white-space: nowrap !important;
+}
+
+.sm-tab:hover {
+  background: #273549 !important;
+  color: #e2e8f0 !important;
+}
+
+.sm-tab.active {
+  background: #080d1a !important;
+  color: #00d4aa !important;
+  border-color: #00d4aa #1e293b #080d1a #1e293b !important;
+  border-top: 2px solid #00d4aa !important;
+}
+
+.sm-tab-dot {
+  color: #00d4aa !important;
+  font-size: 9px !important;
+  line-height: 1 !important;
+}
+
+.sm-tab-title {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-family: monospace !important;
+  font-size: 11px !important;
+}
+
+.sm-tab-close {
+  background: transparent !important;
+  border: none !important;
+  color: #64748b !important;
+  font-size: 12px !important;
+  cursor: pointer !important;
+  padding: 0 2px !important;
+  border-radius: 3px !important;
+  line-height: 1 !important;
+  transition: all 0.15s !important;
+}
+
+.sm-tab-close:hover {
+  color: #ef4444 !important;
+  background: rgba(239, 68, 68, 0.2) !important;
+}
+
+.sm-tab-new-btn {
+  background: #1e293b !important;
+  border: 1px solid #334155 !important;
+  color: #38bdf8 !important;
+  width: 24px !important;
+  height: 24px !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+}
+
+.sm-tab-new-btn:hover {
+  background: #0284c7 !important;
+  color: #ffffff !important;
+}
+
+/* Window Controls */
+.sm-term-win-controls {
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  margin-left: 10px !important;
+}
+
+.sm-win-btn {
+  width: 26px !important;
+  height: 26px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: none !important;
+  border-radius: 4px !important;
+  background: transparent !important;
+  color: #94a3b8 !important;
+  font-size: 13px !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+}
+
+.sm-win-min:hover {
+  background: #334155 !important;
+  color: #f8fafc !important;
+}
+
+.sm-win-max:hover {
+  background: #334155 !important;
+  color: #f8fafc !important;
+}
+
+.sm-win-close:hover {
+  background: #ef4444 !important;
+  color: #ffffff !important;
+}
+
+/* Subheader / PEM & SSH Command Switcher */
+.sm-term-subheader {
+  display: flex !important;
+  flex-direction: column !important;
+  background: #111827 !important;
+  border-bottom: 1px solid #1e293b !important;
+  padding: 8px 14px !important;
+  gap: 8px !important;
+  font-size: 12px !important;
+  box-sizing: border-box !important;
+}
+
+.sm-term-key-info {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+.sm-key-label {
+  color: #94a3b8 !important;
+}
+
+.sm-key-val {
+  color: #00d4aa !important;
+  font-weight: 700 !important;
+  font-family: monospace !important;
+  margin-left: 4px !important;
+  margin-right: auto !important;
+}
+
+.sm-key-dl-btn {
+  background: #059669 !important;
+  color: #ffffff !important;
+  border: none !important;
+  padding: 3px 9px !important;
   border-radius: 4px !important;
   font-size: 11px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  transition: background 0.15s !important;
+}
+
+.sm-key-dl-btn:hover {
+  background: #047857 !important;
+}
+
+.sm-term-os-bar {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.sm-os-tabs {
+  display: flex !important;
+  gap: 4px !important;
+}
+
+.sm-os-tab {
+  background: #1e293b !important;
+  color: #94a3b8 !important;
+  border: 1px solid #334155 !important;
+  padding: 3px 7px !important;
+  border-radius: 4px !important;
+  font-size: 10px !important;
   font-weight: 600 !important;
   cursor: pointer !important;
   transition: all 0.15s !important;
 }
 
-.sm-term-os-tab.active {
+.sm-os-tab.active {
   background: #0284c7 !important;
   color: #ffffff !important;
   border-color: #38bdf8 !important;
 }
 
-.sm-term-cmd-preview {
+.sm-os-cmd-preview {
   flex: 1 !important;
   background: #020617 !important;
   border: 1px solid #1e293b !important;
   border-radius: 4px !important;
-  padding: 6px 10px !important;
+  padding: 4px 8px !important;
   color: #00d4aa !important;
   font-family: monospace !important;
   font-size: 11px !important;
@@ -340,64 +463,93 @@
   text-overflow: ellipsis !important;
 }
 
-.sm-term-copy-btn {
+.sm-os-copy-btn {
   background: #0f766e !important;
   color: #ffffff !important;
   border: none !important;
-  padding: 6px 12px !important;
+  padding: 4px 10px !important;
   border-radius: 4px !important;
   font-size: 11px !important;
   font-weight: 700 !important;
   cursor: pointer !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 4px !important;
   white-space: nowrap !important;
   transition: background 0.15s !important;
 }
 
-.sm-term-copy-btn:hover {
+.sm-os-copy-btn:hover {
   background: #0d9488 !important;
 }
 
-/* xterm container */
+/* Body & Session Panes */
 .sm-term-body {
   flex: 1 !important;
-  padding: 12px 18px !important;
   background: #080d1a !important;
   position: relative !important;
   overflow: hidden !important;
+  padding: 8px 12px !important;
+  box-sizing: border-box !important;
 }
 
-.sm-term-canvas-container {
+.sm-session-pane {
   width: 100% !important;
   height: 100% !important;
+  display: none;
+}
+
+.sm-session-pane.active {
+  display: block !important;
+}
+
+.sm-session-pane .xterm {
+  height: 100% !important;
+}
+
+.sm-term-fallback-view {
+  color: #38bdf8 !important;
+  font-family: monospace !important;
+  font-size: 12px !important;
+  padding: 16px !important;
+}
+
+.sm-term-fallback-view pre {
+  background: #020617 !important;
+  padding: 10px !important;
+  border-radius: 6px !important;
+  border: 1px solid #1e293b !important;
+  color: #00d4aa !important;
+  margin-top: 8px !important;
 }
 
 /* Quick Actions Palette */
 .sm-term-quick-actions {
-  padding: 8px 18px !important;
+  padding: 6px 12px !important;
   background: #0f172a !important;
   border-top: 1px solid #1e293b !important;
   display: flex !important;
   align-items: center !important;
-  gap: 8px !important;
+  gap: 6px !important;
   overflow-x: auto !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+}
+
+.sm-qa-label {
+  color: #64748b !important;
+  font-size: 10px !important;
+  font-weight: bold !important;
+  margin-right: 2px !important;
 }
 
 .sm-term-chip {
   background: #1e293b !important;
   color: #38bdf8 !important;
   border: 1px solid #334155 !important;
-  padding: 4px 10px !important;
-  border-radius: 12px !important;
-  font-size: 11px !important;
+  padding: 3px 8px !important;
+  border-radius: 10px !important;
+  font-size: 10px !important;
   font-weight: 600 !important;
   cursor: pointer !important;
   white-space: nowrap !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 4px !important;
   transition: all 0.15s !important;
 }
 
@@ -406,7 +558,75 @@
   color: #0f172a !important;
 }
 
-@keyframes sm-fadein {
-  from { opacity: 0; }
-  to { opacity: 1; }
+/* ============================================
+   Minimized Bottom Dock Pill (MobaXterm Style)
+   ============================================ */
+
+#sm-minimized-terminal-dock {
+  position: fixed !important;
+  bottom: 20px !important;
+  right: 20px !important;
+  z-index: 2147483646 !important;
+  display: none;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 8px 16px !important;
+  background: #0f172a !important;
+  color: #f8fafc !important;
+  border: 2px solid #00d4aa !important;
+  border-radius: 24px !important;
+  box-shadow: 0 4px 20px rgba(0, 212, 170, 0.35) !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  user-select: none !important;
+  transition: all 0.2s ease !important;
+  animation: sm-dock-pulse 2.5s infinite !important;
 }
+
+#sm-minimized-terminal-dock:hover {
+  background: #1e293b !important;
+  border-color: #38bdf8 !important;
+  box-shadow: 0 6px 25px rgba(56, 189, 248, 0.5) !important;
+  transform: translateY(-2px) scale(1.03) !important;
+}
+
+.sm-dock-icon {
+  font-size: 14px !important;
+}
+
+.sm-dock-title {
+  color: #f8fafc !important;
+}
+
+.sm-dock-badge {
+  background: rgba(0, 212, 170, 0.2) !important;
+  color: #00d4aa !important;
+  padding: 2px 7px !important;
+  border-radius: 10px !important;
+  font-size: 11px !important;
+}
+
+.sm-dock-arrow {
+  color: #38bdf8 !important;
+  font-size: 10px !important;
+}
+
+@keyframes sm-dock-pulse {
+  0% { box-shadow: 0 4px 15px rgba(0, 212, 170, 0.3); }
+  50% { box-shadow: 0 4px 25px rgba(0, 212, 170, 0.6); }
+  100% { box-shadow: 0 4px 15px rgba(0, 212, 170, 0.3); }
+}
+
+@keyframes sm-float-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
