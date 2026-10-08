@@ -387,6 +387,7 @@
       // 1. Minimized Bottom Dock Pill
       dockEl = document.createElement("div");
       dockEl.id = "sm-minimized-terminal-dock";
+      dockEl.style.setProperty("display", "none", "important");
       dockEl.innerHTML = `
         <span class="sm-dock-icon">💻</span>
         <span class="sm-dock-title">Terminal</span>
@@ -401,7 +402,7 @@
       // 2. Floating Terminal Window
       winEl = document.createElement("div");
       winEl.id = "sm-floating-terminal";
-      winEl.style.display = "none";
+      winEl.style.setProperty("display", "none", "important");
       winEl.innerHTML = `
         <!-- Titlebar / Header -->
         <div class="sm-term-titlebar" id="sm-term-titlebar">
