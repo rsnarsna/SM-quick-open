@@ -394,7 +394,9 @@
         <span class="sm-dock-badge" id="sm-dock-badge">● 0 Sessions</span>
         <span class="sm-dock-arrow">▲</span>
       `;
-      dockEl.addEventListener("click", () => {
+      dockEl.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         restoreFromDock();
       });
       document.body.appendChild(dockEl);
@@ -467,9 +469,21 @@
       maxBtnEl = winEl.querySelector("#sm-win-max");
 
       // Wire Window Controls
-      winEl.querySelector("#sm-win-min").addEventListener("click", minimizeToDock);
-      maxBtnEl.addEventListener("click", toggleMaximize);
-      winEl.querySelector("#sm-win-close").addEventListener("click", closeWindowOnly);
+      winEl.querySelector("#sm-win-min").addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        minimizeToDock();
+      });
+      maxBtnEl.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleMaximize();
+      });
+      winEl.querySelector("#sm-win-close").addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        closeWindowOnly();
+      });
 
       winEl.querySelector("#sm-tab-new").addEventListener("click", () => {
         const nextServer =
