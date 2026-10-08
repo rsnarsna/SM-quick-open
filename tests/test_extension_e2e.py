@@ -10,7 +10,21 @@ sys.stdout.reconfigure(encoding='utf-8')
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ARTIFACT_DIR = os.path.join(BASE_DIR, "docs", "screenshots")
+BRAIN_ARTIFACT_DIR = r"C:\Users\ADMIN\.gemini\antigravity\brain\998cf03a-db51-4b2f-bd63-8f9d019ef1fd"
 EXT_PATH = BASE_DIR
+
+os.makedirs(ARTIFACT_DIR, exist_ok=True)
+
+def save_screenshot(page, name_repo, name_brain=None):
+    p1 = os.path.join(ARTIFACT_DIR, name_repo)
+    page.screenshot(path=p1)
+    if name_brain and os.path.exists(BRAIN_ARTIFACT_DIR):
+        p2 = os.path.join(BRAIN_ARTIFACT_DIR, name_brain)
+        page.screenshot(path=p2)
+    elif os.path.exists(BRAIN_ARTIFACT_DIR):
+        p2 = os.path.join(BRAIN_ARTIFACT_DIR, name_repo)
+        page.screenshot(path=p2)
+    return p1
 
 PORTAL_HTML = """<!DOCTYPE html>
 <html lang="en">
@@ -139,12 +153,12 @@ def start_portal_server(port):
 
 def run_tests():
     print("=" * 60)
-    print("🚀 FULL MANUAL STEP-BY-STEP PLAYWRIGHT VALIDATION SUITE")
+    print("🚀 FULL AUTOMATED PLAYWRIGHT VALIDATION SUITE")
     print("=" * 60)
 
     server_portal = start_portal_server(8080)
-    print("✓ Local mock portal running on http://127.0.0.1:8080")
-    print("✓ Live Splunk Enterprise running on http://localhost:8000")
+    print("✓ Mock portal server listening on http://127.0.0.1:8080")
+    print("✓ Live Splunk server listening on http://localhost:8000")
 
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True, args=['--disable-gpu', '--no-sandbox'])
@@ -179,9 +193,8 @@ def run_tests():
         assert local_pill is not None, "FAILED: [ℹ️ Localhost (8000)] pill not attached!"
         print(f"  ✓ [ℹ️ Localhost Pill]: ATTACHED at bottom right")
 
-        shot1 = os.path.join(ARTIFACT_DIR, "step1_portal_detected.png")
-        page_portal.screenshot(path=shot1)
-        print(f"  📷 Step 1 Screenshot Saved: {shot1}")
+        s1 = save_screenshot(page_portal, "portal-detection.png", "step1_portal_detected.png")
+        print(f"  📷 Step 1 Screenshot Saved: {s1}")
 
         # -------------------------------------------------------------
         # STEP 2: TEST WEB TERMINAL MODAL & SSH SESSION EXECUTION
@@ -216,9 +229,8 @@ def run_tests():
             page_portal.wait_for_timeout(600)
             print("  ✓ [Quick Command Chip]: Clicked 'Splunk Status' and executed inside terminal session")
 
-        shot2 = os.path.join(ARTIFACT_DIR, "step2_web_terminal_modal.png")
-        page_portal.screenshot(path=shot2)
-        print(f"  📷 Step 2 Screenshot Saved: {shot2}")
+        s2 = save_screenshot(page_portal, "web-terminal-modal.png", "step2_web_terminal_modal.png")
+        print(f"  📷 Step 2 Screenshot Saved: {s2}")
 
         # -------------------------------------------------------------
         # STEP 3: TEST SPLUNK PORT 8000 AUTO-LOGIN ON LIVE SPLUNK
@@ -239,9 +251,8 @@ def run_tests():
         assert "/app/launcher/home" in current_url or "/account/login" in current_url, f"Unexpected URL: {current_url}"
         print("  ✓ [Splunk Auto-Authentication]: SIGNED IN & REDIRECTED TO HOME DASHBOARD")
 
-        shot3 = os.path.join(ARTIFACT_DIR, "step3_splunk_autologin.png")
-        page_splunk.screenshot(path=shot3)
-        print(f"  📷 Step 3 Screenshot Saved: {shot3}")
+        s3 = save_screenshot(page_splunk, "splunk-autologin.png", "step3_splunk_autologin.png")
+        print(f"  📷 Step 3 Screenshot Saved: {s3}")
 
         # -------------------------------------------------------------
         # STEP 4: TEST EXTENSION POPUP UI & TABS
@@ -292,23 +303,21 @@ def run_tests():
             `;
         }""")
 
-        shot4 = os.path.join(ARTIFACT_DIR, "step4_popup_splunk_tab.png")
-        page_popup.screenshot(path=shot4)
-        print(f"  📷 Step 4A (Splunk Tab) Screenshot Saved: {shot4}")
+        s4 = save_screenshot(page_popup, "popup-splunk-tab.png", "step4_popup_splunk_tab.png")
+        print(f"  📷 Step 4A (Splunk Tab) Screenshot Saved: {s4}")
 
         # Switch to SSH & PEM tab
         page_popup.click("#tab-btn-ssh")
         page_popup.wait_for_timeout(300)
 
-        shot5 = os.path.join(ARTIFACT_DIR, "step4_popup_ssh_tab.png")
-        page_popup.screenshot(path=shot5)
-        print(f"  📷 Step 4B (SSH & PEM Tab) Screenshot Saved: {shot5}")
+        s5 = save_screenshot(page_popup, "popup-ssh-tab.png", "step4_popup_ssh_tab.png")
+        print(f"  📷 Step 4B (SSH & PEM Tab) Screenshot Saved: {s5}")
 
         browser.close()
 
     server_portal.shutdown()
     print("\n" + "=" * 60)
-    print("🎉 ALL 4 E2E TESTS PASSED 100% SUCCESSFULLY WITH ZERO ERRORS!")
+    print("🎉 ALL 4 PLAYWRIGHT E2E TESTS PASSED 100% WITH ZERO ERRORS!")
     print("=" * 60)
 
 if __name__ == "__main__":
