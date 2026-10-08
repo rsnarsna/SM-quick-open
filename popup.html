@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      width: 360px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #1a1a2e;
+      color: #e0e0e0;
+      padding: 16px;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .header h1 {
+      font-size: 15px;
+      color: #00d4aa;
+      font-weight: 700;
+    }
+    .header p {
+      font-size: 11px;
+      color: #888;
+    }
+    
+    /* Navigation Tabs */
+    .nav-tabs {
+      display: flex;
+      background: #0f172a;
+      border-radius: 6px;
+      padding: 3px;
+      margin-bottom: 12px;
+      gap: 4px;
+    }
+    .nav-tab {
+      flex: 1;
+      text-align: center;
+      padding: 6px 8px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #94a3b8;
+      background: transparent;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .nav-tab.active {
+      background: #1e293b;
+      color: #00d4aa;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .tab-pane {
+      display: none;
+    }
+    .tab-pane.active {
+      display: block;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid #2d2d44;
+      margin: 10px 0;
+    }
+    .section-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #888;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .list-container {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-height: 170px;
+      overflow-y: auto;
+      margin-bottom: 10px;
+    }
+    .list-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #16213e;
+      border: 1px solid #2d2d44;
+      border-radius: 6px;
+      padding: 8px 10px;
+      transition: border-color 0.15s ease;
+    }
+    .list-item:hover {
+      border-color: #00d4aa;
+    }
+    .item-text {
+      font-family: monospace;
+      font-size: 12px;
+      font-weight: 600;
+      color: #00d4aa;
+      word-break: break-all;
+    }
+    .action-btn {
+      background: #00d4aa;
+      color: #1a1a2e;
+      border: none;
+      padding: 5px 9px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+    .action-btn:hover {
+      background: #00ffcc;
+    }
+    .action-btn.secondary {
+      background: #0284c7;
+      color: #ffffff;
+    }
+    .action-btn.secondary:hover {
+      background: #38bdf8;
+    }
+    .empty-state {
+      background: #16213e;
+      border: 1px dashed #333;
+      border-radius: 6px;
+      padding: 10px;
+      text-align: center;
+      font-size: 11px;
+      color: #888;
+    }
+    .quick-open-box {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .quick-input {
+      flex: 1;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 4px;
+      padding: 6px 8px;
+      color: #fff;
+      font-size: 12px;
+      font-family: monospace;
+      outline: none;
+    }
+    .quick-input:focus {
+      border-color: #00d4aa;
+    }
+    .creds {
+      background: #0f172a;
+      border: 1px solid #2d2d44;
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-size: 11px;
+      display: flex;
+      justify-content: space-between;
+      color: #888;
+      margin-top: 8px;
+    }
+    .creds span strong {
+      color: #00d4aa;
+      font-family: monospace;
+    }
+    .footer {
+      margin-top: 10px;
+      font-size: 10px;
+      color: #555;
+      text-align: center;
+    }
+    
+    /* Light Theme Overrides */
+    @media (prefers-color-scheme: light) {
+      body {
+        background: #f8fafc;
+        color: #1e293b;
+      }
+      .header h1 {
+        color: #0f766e;
+      }
+      .header p {
+        color: #64748b;
+      }
+      .nav-tabs {
+        background: #e2e8f0;
+      }
+      .nav-tab.active {
+        background: #ffffff;
+        color: #0f766e;
+      }
+      .divider {
+        border-top: 1px solid #e2e8f0;
+      }
+      .list-item {
+        background: #ffffff;
+        border-color: #cbd5e1;
+      }
+      .list-item:hover {
+        border-color: #0f766e;
+      }
+      .item-text {
+        color: #0f766e;
+      }
+      .action-btn {
+        background: #0f766e;
+        color: #ffffff;
+      }
+      .action-btn:hover {
+        background: #0d9488;
+      }
+      .empty-state {
+        background: #f1f5f9;
+        border-color: #cbd5e1;
+        color: #64748b;
+      }
+      .quick-input {
+        background: #ffffff;
+        border-color: #cbd5e1;
+        color: #1e293b;
+      }
+      .quick-input:focus {
+        border-color: #0f766e;
+      }
+      .creds {
+        background: #f1f5f9;
+        border-color: #cbd5e1;
+        color: #64748b;
+      }
+      .creds span strong {
+        color: #0f766e;
+      }
+      #localhost-quick-btn {
+        background: #ffffff;
+        color: #0369a1;
+        border-color: #0369a1;
+      }
+      #localhost-quick-btn:hover {
+        background: #f0f9ff;
+      }
+    }
+
+    .donate-btn {
+      display: block;
+      margin-top: 12px;
+      padding: 8px;
+      text-align: center;
+      background: linear-gradient(135deg, #ff8a00, #e52e71);
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 11px;
+      border-radius: 6px;
+      box-shadow: 0 4px 15px rgba(229, 46, 113, 0.4);
+      transition: opacity 0.2s;
+    }
+    .donate-btn:hover {
+      opacity: 0.85;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <img src="icons/icon48.png" style="width:32px; height:32px; border-radius:6px; box-shadow: 0 2px 8px rgba(0, 212, 170, 0.3);" alt="SM-quick-open" />
+    <div>
+      <h1>SM-quick-open</h1>
+      <p>Splunk 1-Click & Web Terminal Hub</p>
+    </div>
+  </div>
+
+  <!-- Navigation Tabs -->
+  <div class="nav-tabs">
+    <button class="nav-tab active" id="tab-btn-splunk">⚡ Splunk Open</button>
+    <button class="nav-tab" id="tab-btn-ssh">💻 SSH & PEM Keys</button>
+  </div>
+
+  <!-- TAB 1: SPLUNK (FROZEN) -->
+  <div class="tab-pane active" id="pane-splunk">
+    <div style="margin-bottom: 12px;">
+      <button id="localhost-quick-btn" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background: #0f172a; color: #38bdf8; border: 1px solid #38bdf8; border-radius: 6px; padding: 8px 12px; font-size: 12px; font-weight: 700; cursor: pointer; box-shadow: 0 2px 8px rgba(56, 189, 248, 0.25); transition: all 0.15s ease;">
+        ℹ️ Open Localhost Splunk (Port 8000)
+      </button>
+    </div>
+
+    <div class="section-title">
+      <span>Listed IPs On Page</span>
+      <span id="ip-count" style="color: #00d4aa; font-weight: bold;">0 found</span>
+    </div>
+
+    <div id="ip-list-container" class="list-container">
+      <div class="empty-state">Scanning active page for IPs...</div>
+    </div>
+
+    <div class="section-title" style="margin-top: 10px;">Quick Open by IP / Host</div>
+    <div class="quick-open-box">
+      <input type="text" id="manual-ip" class="quick-input" placeholder="e.g. 18.208.163.125 or localhost" />
+      <button id="manual-open-btn" class="action-btn">Open</button>
+    </div>
+
+    <div class="creds">
+      <span>User: <strong>admin</strong></span>
+      <span>Pass: <strong>admin123</strong></span>
+      <span>Port: <strong>8000</strong></span>
+    </div>
+  </div>
+
+  <!-- TAB 2: SSH & PEM KEYS -->
+  <div class="tab-pane" id="pane-ssh">
+    <div class="section-title">
+      <span>🔑 Detected PEM Keys</span>
+      <span id="pem-count" style="color: #38bdf8; font-weight: bold;">0 keys</span>
+    </div>
+    <div id="pem-list-container" class="list-container">
+      <div class="empty-state">Scanning for .pem key files...</div>
+    </div>
+
+    <div class="section-title" style="margin-top: 10px;">
+      <span>🖥️ Active SSH Servers</span>
+      <span id="server-count" style="color: #00d4aa; font-weight: bold;">0 active</span>
+    </div>
+    <div id="server-list-container" class="list-container">
+      <div class="empty-state">Scanning for SSH instances...</div>
+    </div>
+  </div>
+
+  <a href="https://buymeacoffee.com/narayanansw" target="_blank" class="donate-btn">
+    ☕ Support this tool (Buy me a coffee)
+  </a>
+
+  <div class="footer">
+    Highlight any IP or click ⚡ Splunk / 💻 Terminal on page<br>
+    <a href="mailto:support@softmania.in?subject=SM-quick-open%20Feedback" style="color: #00d4aa; text-decoration: none; margin-top: 5px; display: inline-block;">💬 Give Feedback</a>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

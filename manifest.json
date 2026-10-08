@@ -1,0 +1,59 @@
+{
+  "manifest_version": 3,
+  "name": "SM-quick-open",
+  "version": "1.1",
+  "description": "1-Click Splunk Auto-Login & Web SSH Terminal with PEM Key Auto-Detection",
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>",
+    "http://localhost/*",
+    "http://127.0.0.1/*",
+    "*://*/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>",
+        "http://localhost/*",
+        "http://127.0.0.1/*",
+        "*://*/*"
+      ],
+      "js": ["lib/xterm.bundle.js", "content.js"],
+      "css": ["lib/xterm.css", "styles.css"],
+      "run_at": "document_end"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "SM-quick-open",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "64": "icons/icon64.png",
+    "96": "icons/icon96.png",
+    "128": "icons/icon128.png"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "sm-quick-open@softmania.in",
+      "strict_min_version": "109.0"
+    }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["icons/*", "lib/*"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
