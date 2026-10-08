@@ -611,8 +611,8 @@
 
     function minimizeToDock() {
       ensureDOM();
-      winEl.style.display = "none";
-      dockEl.style.display = "inline-flex";
+      winEl.classList.remove("sm-term-open");
+      dockEl.classList.add("sm-dock-open");
       isWindowVisible = false;
       isMinimized = true;
       updateDockBadge();
@@ -620,8 +620,8 @@
 
     function restoreFromDock() {
       ensureDOM();
-      winEl.style.display = "flex";
-      dockEl.style.display = "none";
+      winEl.classList.add("sm-term-open");
+      dockEl.classList.remove("sm-dock-open");
       isWindowVisible = true;
       isMinimized = false;
       const sess = getActiveSession();
@@ -637,14 +637,14 @@
 
     function closeWindowOnly() {
       ensureDOM();
-      winEl.style.display = "none";
+      winEl.classList.remove("sm-term-open");
       isWindowVisible = false;
       if (sessions.size > 0) {
-        dockEl.style.display = "inline-flex";
+        dockEl.classList.add("sm-dock-open");
         isMinimized = true;
         updateDockBadge();
       } else {
-        dockEl.style.display = "none";
+        dockEl.classList.remove("sm-dock-open");
         isMinimized = false;
       }
     }
@@ -825,8 +825,8 @@
 
       initSessionTerminal(session);
 
-      winEl.style.display = "flex";
-      dockEl.style.display = "none";
+      winEl.classList.add("sm-term-open");
+      dockEl.classList.remove("sm-dock-open");
       isWindowVisible = true;
       isMinimized = false;
       updateDockBadge();
@@ -842,8 +842,8 @@
       );
 
       if (existing) {
-        winEl.style.display = "flex";
-        dockEl.style.display = "none";
+        winEl.classList.add("sm-term-open");
+        dockEl.classList.remove("sm-dock-open");
         isWindowVisible = true;
         isMinimized = false;
         switchToSession(existing.id);
