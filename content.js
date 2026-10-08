@@ -612,7 +612,9 @@
     function minimizeToDock() {
       ensureDOM();
       winEl.classList.remove("sm-term-open");
+      winEl.style.setProperty("display", "none", "important");
       dockEl.classList.add("sm-dock-open");
+      dockEl.style.setProperty("display", "inline-flex", "important");
       isWindowVisible = false;
       isMinimized = true;
       updateDockBadge();
@@ -621,7 +623,9 @@
     function restoreFromDock() {
       ensureDOM();
       winEl.classList.add("sm-term-open");
+      winEl.style.setProperty("display", "flex", "important");
       dockEl.classList.remove("sm-dock-open");
+      dockEl.style.setProperty("display", "none", "important");
       isWindowVisible = true;
       isMinimized = false;
       const sess = getActiveSession();
@@ -638,13 +642,16 @@
     function closeWindowOnly() {
       ensureDOM();
       winEl.classList.remove("sm-term-open");
+      winEl.style.setProperty("display", "none", "important");
       isWindowVisible = false;
       if (sessions.size > 0) {
         dockEl.classList.add("sm-dock-open");
+        dockEl.style.setProperty("display", "inline-flex", "important");
         isMinimized = true;
         updateDockBadge();
       } else {
         dockEl.classList.remove("sm-dock-open");
+        dockEl.style.setProperty("display", "none", "important");
         isMinimized = false;
       }
     }
@@ -826,7 +833,9 @@
       initSessionTerminal(session);
 
       winEl.classList.add("sm-term-open");
+      winEl.style.setProperty("display", "flex", "important");
       dockEl.classList.remove("sm-dock-open");
+      dockEl.style.setProperty("display", "none", "important");
       isWindowVisible = true;
       isMinimized = false;
       updateDockBadge();
@@ -843,7 +852,9 @@
 
       if (existing) {
         winEl.classList.add("sm-term-open");
+        winEl.style.setProperty("display", "flex", "important");
         dockEl.classList.remove("sm-dock-open");
+        dockEl.style.setProperty("display", "none", "important");
         isWindowVisible = true;
         isMinimized = false;
         switchToSession(existing.id);
